@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Café Fanga - Distribution Mobile de Café</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- VARIABLES & RESET --- */
+        :root {
+            --primary: #4e342e; /* Brun café foncé */
+            --secondary: #d7ccc8; /* Crème léger */
+            --accent: #ffb74d; /* Touche dorée/orange */
+            --bg-light: #f9f9f9;
+            --text-dark: #2c2c2c;
+            --text-light: #ffffff;
+            --text-grey: #666;
+            --radius-btn: 50px;
+            --radius-card: 20px;
+            --header-height: 80px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* --- HEADER / NAVIGATION --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            position: fixed;
+            width: 100%;
+            height: var(--header-height);
+            top: 0;
+            background: rgba(255,255,255,0.98);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .logo-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+        .logo-img {
+            max-height: 60px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .header-socials {
+            display: flex;
+            gap: 15px;
+        }
+        .social-btn-head {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        .social-btn-head:hover { transform: scale(1.1); background-color: var(--accent); }
+
+        /* --- MAIN CONTAINER --- */
+        main {
+            min-height: 100vh;
+        }
+
+        .section-content {
+            display: none;
+            padding: 100px 5% 40px 5%; 
+            animation: fadeUp 0.6s ease-out;
+        }
+        .active-section { display: block; }
+
+        #accueil.section-content {
+            padding: 0;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+       /* --- 1. HERO BANNER (Modifié) --- */
+        .hero-banner {
+            height: 100vh;
+            width: 100%;
+            
+            /* REMPLACE 'ta-photo.jpg' PAR LE NOM EXACT DE TA PHOTO */
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('photo_6_2026-02-21_12-28-54.jpg');
+            
+            /* 'cover' remplit l'écran SANS déformer l'image (garde les proportions) */
+            background-size: cover;
+            
+            /* IMPORTANT : Si c'est une photo de toi, 'center top' aligne l'image vers le haut.
+               Cela évite de couper ta tête sur les petits écrans. */
+            background-position: center top; 
+            
+            /* 'scroll' est souvent mieux que 'fixed' sur mobile pour éviter un zoom excessif */
+            background-attachment: scroll;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--text-light);
+            padding: 0 5%;
+            margin-top: 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 25px;
+        }
+        .hero-content span {
+            color: var(--accent);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border-radius: var(--radius-btn);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: var(--primary);
+            box-shadow: 0 10px 20px rgba(0,0,0, 0.2);
+        }
+        .btn-accent:hover {
+             background-color: #ffca78; 
+             transform: translateY(-3px);
+        }
+
+        /* --- 2. SERVICES (OFFRE MOBILE) --- */
+        .grid-services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .product-card {
+            background: #fff;
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #eee;
+        }
+        .product-card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 40px rgba(78, 52, 46, 0.1);
+            border-color: var(--primary);
+        }
+        
+        .product-img-box {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+        }
+        .product-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .product-card:hover .product-img-box img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 25px;
+        }
+        .product-info h3 { font-size: 1.2rem; margin-bottom: 10px; color: var(--primary); }
+        .product-info p { font-size: 0.9rem; color: var(--text-grey); }
+
+        /* --- 3. GALERIE --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        .gallery-item {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            height: 250px;
+            position: relative;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.03);
+        }
+
+        /* --- 4. A PROPOS & CONTACT --- */
+        .split-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            background-color: var(--bg-light);
+            padding: 50px;
+            border-radius: 30px;
+        }
+        .split-img img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .contact-methods { margin-top: 20px; }
+        .contact-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+        .contact-row i { color: var(--primary); font-size: 1.5rem; }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: var(--radius-btn);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            header { flex-direction: column; gap: 15px; height: auto; padding: 20px 5%; }
+            .logo-img { max-height: 50px; }
+            main { margin-top: 140px; }
+            .hero-banner { margin-top: -140px; padding-top: 140px; height: auto; min-height: 100vh; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .split-section, .gallery-grid { grid-template-columns: 1fr; }
+            nav ul { gap: 15px; flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="travail1.jpeg" alt="Logo Café Fanga" class="logo-img">
+        </div>
+        <nav>
+            <ul>
+                <li><a onclick="showSection('accueil')" class="nav-link active" id="nav-accueil">Accueil</a></li>
+                <li><a onclick="showSection('services')" class="nav-link" id="nav-services">Nos Produits</a></li>
+                <li><a onclick="showSection('galerie')" class="nav-link" id="nav-galerie">Réalisations</a></li>
+                <li><a onclick="showSection('apropos')" class="nav-link" id="nav-apropos">Concept</a></li>
+                <li><a onclick="showSection('contact')" class="nav-link" id="nav-contact">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header-socials">
+            <a href="https://g.co/kgs/v8T8m9M" target="_blank" class="social-btn-head" title="Voir sur Google Maps"><i class="fas fa-map-marker-alt"></i></a>
+            <a href="https://www.facebook.com/share/188sywkmkV/" class="social-btn-head"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="social-btn-head"><i class="fab fa-instagram"></i></a>
+        </div>
+    </header>
+
+    <main>
+        <section id="accueil" class="section-content active-section">
+            <div class="hero-banner">
+                <div class="hero-content">
+                    <h1>L'inspiration <br><span>EN TASSE</span></h1>
+                    <p>Distribution mobile de café d'excellence. Au bureau, en événement ou dans la rue, savourez la qualité Café Fanga où que vous soyez.</p>
+                    
+                    <button onclick="showSection('contact')" class="btn btn-accent">Nous contacter</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="section-content">
+            <div style="text-align:center; margin-bottom:40px;">
+                <h2>Nos Produits</h2>
+                <p style="color:var(--text-grey); max-width: 600px; margin: 10px auto;">Nous apportons l'expérience coffee shop directement à vous.</p>
+            </div>
+            <div class="grid-services">
+                <div class="product-card">
+                    <div class="product-img-box">
+                        <img src="petit cola.jpeg" alt="Café Gingembre - Petit Cola">
+                    </div>
+                    <div class="product-info">
+                        <h3>CAFE MOULU SAVEUR GINGEMBRE - PETIT COLA</h3>
+                        <p>Un mélange unique et stimulant de café moulu, rehaussé par les notes épicées du gingembre et la force du petit cola.</p>
+                    </div>
+                </div>
+                 <div class="product-card">
+                    <div class="product-img-box">
+                        <img src="cannel9.jpeg" alt="Café Cannelle">
+                    </div>
+                     <div class="product-info">
+                        <h3>CAFE MOULU SAVEUR CANNELLE</h3>
+                        <p>Un café moulu délicatement parfumé à la cannelle pour une pause douceur et réconfortante.</p>
+                    </div>
+                </div>
+                 <div class="product-card">
+                    <div class="product-img-box">
+                        <img src="anis.jpeg" alt="Café Anis">
+                    </div>
+                     <div class="product-info">
+                        <h3>CAFE MOULU SAVEUR ANIS</h3>
+                        <p>L'alliance originale du café moulu et de l'anis étoilé pour une expérience gustative surprenante et digestive.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="galerie" class="section-content">
+            <div style="text-align:center; margin-bottom:30px;">
+                <h2>Sur le Terrain</h2>
+                <p style="color:var(--text-grey);">Nos interventions et nos produits en images.</p>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="WhatsApp Image 2026-02-18 at 02.15.08 (1).jpeg" alt="Café 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="photo_6_2026-02-21_12-28-54.jpg" alt="Café 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="photo_5_2026-02-21_12-29-46.jpg" alt="Café 3">
+                </div>
+                 <div class="gallery-item">
+                    <img src="imag8.jpeg" alt="Café 4">
+                </div>
+                 <div class="gallery-item">
+                    <img src="WhatsApp Image 2026-02-18 at 02.15.08 (3).jpeg" alt="Café 5">
+                </div>
+                 <div class="gallery-item">
+                    <img src="photo_3_2026-02-21_12-29-46.jpg" alt="Café 6">
+                </div>
+            </div>
+        </section>
+
+        <section id="apropos" class="section-content">
+            <div class="split-section">
+                <div class="split-text">
+                    <h2 style="font-size: 2.5rem; margin-bottom:20px;">Notre Concept Mobile</h2>
+                    <p style="color:var(--text-grey); line-height:1.8;">
+                        <strong>Café Fanga</strong> révolutionne votre pause café. Nous ne sommes pas un restaurant, mais une entreprise de distribution agile et proche de vous.
+                        <br><br>
+                        Notre mission est simple : offrir un café de qualité supérieure, là où vous en avez besoin. Que ce soit au pied de votre immeuble ou lors de vos grands événements, notre service mobile s'adapte à votre rythme.
+                    </p>
+                    <br>
+                    <a href="https://g.co/kgs/v8T8m9M" target="_blank" style="color:var(--primary); font-weight:bold; text-decoration:none;">Voir notre zone d'activité &rarr;</a>
+                </div>
+                <div class="split-img">
+                    <img src="concept.jpg" alt="Préparation café">
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section-content">
+            <div class="split-section" style="background: white; border: 2px solid var(--secondary); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <div>
+                    <h2>Contactez Café Fanga</h2>
+                    <p style="margin-bottom: 30px;">Besoin d'une livraison ou d'une prestation pour un événement ?</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-row">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <a href="https://g.co/kgs/v8T8m9M" target="_blank" style="color:var(--text-dark); font-weight:bold;">Voir notre QG / Zone sur Google Maps</a>
+                        </div>
+                        <div class="contact-row">
+                            <i class="fas fa-phone-alt"></i>
+                            <span>+226 76 012 760</span>
+                        </div>
+                        <div class="contact-row">
+                            <i class="fas fa-envelope"></i>
+                            <span>cafefanga@gmail.com</span>
+                        </div>
+                    </div>
+                    <a href="https://g.co/kgs/v8T8m9M" target="_blank" class="btn-primary" style="margin-top:20px;">Nous localiser</a>
+                </div>
+                <div class="split-img">
+                     <img src="Coffee Love (1).jpeg" alt="Contact Café Fanga">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section-content').forEach(el => el.classList.remove('active-section'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active-section');
+            const navLink = document.getElementById('nav-' + sectionId);
+            if (navLink) navLink.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
